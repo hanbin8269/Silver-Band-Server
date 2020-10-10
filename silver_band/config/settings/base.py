@@ -23,12 +23,15 @@ JWT_AUTH = {
 
 DATABASES = config_secret_common["django"]["database"]
 
+AUTH_USER_MODEL = "account.User"
 
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",  # Django가 관리하는 AUTH
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "account",
 ]
 
 MIDDLEWARE = [
@@ -69,7 +73,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
