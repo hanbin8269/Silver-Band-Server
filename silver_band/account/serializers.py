@@ -20,18 +20,6 @@ class LoginUserSerializer(serializers.Serializer):
     email = serializers.CharField()
     password = serializers.CharField()
 
-    def _check_payload(self, token):
-        try:
-            payload = utils.jwt_decode_handler(token)
-        except jwt.ExpiredSignature:
-            msg = _("Signature has expired.")
-            raise serializers.ValidationError(msg)
-        except jwt.DecodeError:
-            mas = _("Error decoding signature.")
-            raise serializers.ValidationError(msg)
-
-        return payload
-
     def validate(self, data):
         credentials = {"email": data["email"], "password": data["password"]}
         user = authenticate(**credentials)
@@ -40,8 +28,6 @@ class LoginUserSerializer(serializers.Serializer):
             payload = {"id": user.id, "email": user.email, "username": user.username}
 
             token = utils.jwt_encode_handler(payload)
-
-            self._check_payload(token=token)
 
             return (user, token)
 
