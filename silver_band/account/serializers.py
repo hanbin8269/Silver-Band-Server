@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Wearer
 from django.contrib.auth import authenticate
 from rest_framework_jwt import utils
 from django.utils.translation import ugettext as _
@@ -17,7 +17,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
 
 class LoginUserSerializer(serializers.Serializer):
-    email = serializers.CharField()
+    email = serializers.EmailField()
     password = serializers.CharField()
 
     def validate(self, data):
@@ -25,7 +25,7 @@ class LoginUserSerializer(serializers.Serializer):
         user = authenticate(**credentials)
 
         if user and user.is_active:
-            payload = {"id": user.id, "email": user.email, "username": user.username}
+            payload = {"id": user.id, "email": user.email}
 
             token = utils.jwt_encode_handler(payload)
 
@@ -39,3 +39,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "username", "email")
+
+
+class WearerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wearer
+        fields = ("id", "name", "age", "sex", "address")
