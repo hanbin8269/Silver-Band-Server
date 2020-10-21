@@ -11,7 +11,30 @@ ROOT_DIR = os.path.dirname(BASE_DIR)
 CONFIG_SECRET_DIR = os.path.join(ROOT_DIR, ".config_secret")
 CONFIG_SECRET_COMMON_FILE = os.path.join(CONFIG_SECRET_DIR, "settings_common.json")
 
-config_secret_common = json.loads(open(CONFIG_SECRET_COMMON_FILE).read())
+if os.path.isfile(CONFIG_SECRET_COMMON_FILE):
+    # 로컬 환경 또는 배포 환경
+    config_secret_common = json.loads(open(CONFIG_SECRET_COMMON_FILE).read())
+else:
+    # 테스팅 환경 (환경변수로 지정해야댐)
+    config_secret_common = {
+        "django": {
+            "secret_key": os.environ["DJANGO_SECRET_KEY"],
+            "database": {
+                "default": {
+                    "ENGINE": "django.db.backends.mysql",
+                    "NAME": "silverbanddb",
+                    "USER": os.environ["DB_USER"],
+                    "PASSWORD": os.environ["DB_PASSWORD"],
+                    "HOST": os.environ["DB_HOST"],
+                    "PORT": "3306",
+                }
+            },
+        },
+        "jwt": {
+            "secret_key": os.environ["JWT_SECRET_KEY"],
+            "algorithm": os.environ["JWT_SECRET_KEY"],
+        },
+    }
 
 SECRET_KEY = config_secret_common["django"]["secret_key"]
 
