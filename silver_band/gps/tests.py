@@ -10,9 +10,8 @@ class CreateLocation(TestCase):
     def test_create_sucess(self):
         location = {
             "wearer_id" : 0,
-            "x" : 35.044515, 
-            "y" : 126.718850,
-            "created_At" : "2020-10-27 15:57:23" # %Y-%m-%d %H:%M:%S
+            "loc_x" : 35.044515, 
+            "loc_y" : 126.718850,
         }
 
         response = client.post(
@@ -23,9 +22,8 @@ class CreateLocation(TestCase):
     def test_create_fail_with_not_exist_wearer(self):
         location = {
             "wearer_id" : 1234,
-            "x" : 35.044515, 
-            "y" : 126.718850,
-            "created_At" : "2020-10-27 15:57:23" # %Y-%m-%d %H:%M:%S 
+            "loc_x" : 35.044515, 
+            "loc_y" : 126.718850,
         }
 
         response = client.post(
