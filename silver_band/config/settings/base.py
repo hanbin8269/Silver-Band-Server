@@ -39,6 +39,12 @@ AUTHENTICATION_BACKENDS = [
 ]
 # Application definition
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "account.authentication.JSONWebTokenAuthentication",
+    ),
+}
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
